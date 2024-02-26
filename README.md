@@ -10,7 +10,7 @@ Montrer que l'on peut créer un éditeur de dossier (médical par exemple) sans 
 - [x] 2. Export/Import des données du dossier (champs des formulaires)
 - [x] 3. Export/Import du dossier avec données et assets (pdfs par exemple)
 - [x] 4. Export en un pdf global
-- [ ] 5. Gestion de gros fichiers (>100 Mo)
+- [x] 5. Gestion de gros fichiers (>100 Mo)
 - [ ] 6. Stockage dans localStorage
 
 ## Résultat de POC
@@ -37,5 +37,7 @@ Plusieurs librairies de génération de PDF existent, il nous faut pouvoir :
 [Comparaison de librairies](https://dev.to/handdot/generate-a-pdf-in-js-summary-and-comparison-of-libraries-3k0p)
 
 ### Gestion de gros fichiers (>100 Mo)
+
+Lenteurs notables (>4s pour exporter le zip, >3s pour exporter le pdf), mais pas forcément dérageantes
 
 ### 6. Stockage dans localStorage
