@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
   <head>
     <meta charset="UTF-8" />
@@ -7,7 +7,43 @@
     <title>Vite + TS</title>
   </head>
   <body>
-    <div id="app"></div>
+    <p>
+      <label>
+        <div>Importer votre dossier.json</div>
+        <input type="file" id="importJson" />
+      </label>
+    </p>
+
+    <p>
+      <label>
+        <div>Prénom</div>
+        <input type="text" id="identity-firstName" />
+      </label>
+    </p>
+
+    <p>
+      <label>
+        <div>Nom</div>
+        <input type="text" id="identity-lastName" />
+      </label>
+    </p>
+
+    <p>
+      <label>
+        <div>Date de naissance</div>
+        <input type="date" id="identity-birthDate" />
+      </label>
+    </p>
+
+    <p>
+      <label>
+        <input type="checkbox" id="likeChocolate" />
+        <span>J'aime le chocolat</span>
+      </label>
+    </p>
+
+    <button type="button" id="exportJson">Exporter votre dossier.json</button>
+
     <script type="module" src="/src/main.ts"></script>
   </body>
 </html>
