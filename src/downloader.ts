@@ -1,21 +1,79 @@
+import { Zippable, strToU8, zipSync } from "fflate";
+import { Files, Form } from "./contracts";
+import { loadU8 } from "./loader";
+
+const downloadURL = ({ url, fileName }: { url: string; fileName: string }) => {
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = fileName;
+  a.style.display = "none";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+};
+
 export const downloadJsonFile = ({
-  filename = "dossier.json",
-  json,
+  fileName = "dossier.json",
+  form,
 }: {
-  filename?: string;
-  json: string;
+  fileName?: string;
+  form: Form;
 }) => {
-  const element = document.createElement("a");
-  element.setAttribute(
-    "href",
-    "data:text/plain;charset=utf-8," + encodeURIComponent(json)
-  );
-  element.setAttribute("download", filename);
+  const json = JSON.stringify(form);
 
-  element.style.display = "none";
-  document.body.appendChild(element);
+  downloadURL({
+    url: "data:text/plain;charset=utf-8," + encodeURIComponent(json),
+    fileName,
+  });
+};
 
-  element.click();
+const downloadBlob = ({
+  data,
+  fileName,
+  mimeType,
+}: {
+  data: BlobPart;
+  fileName: string;
+  mimeType: string;
+}) => {
+  const blob = new Blob([data], {
+    type: mimeType,
+  });
 
-  document.body.removeChild(element);
+  const url = window.URL.createObjectURL(blob);
+
+  downloadURL({
+    url,
+    fileName,
+  });
+
+  setTimeout(() => window.URL.revokeObjectURL(url), 1000);
+};
+
+export const downloadZip = async ({
+  folderName = "dossier",
+  form,
+  files,
+}: {
+  folderName?: string;
+  form: Form;
+  files: Files;
+}) => {
+  const json = JSON.stringify(form);
+
+  const zipContent: Zippable = {
+    "data.json": strToU8(json),
+  };
+
+  if (files.identity.card) {
+    zipContent[`identity.card.pdf`] = await loadU8(files.identity.card);
+  }
+
+  const zipped = zipSync(zipContent);
+
+  downloadBlob({
+    data: zipped,
+    fileName: `${folderName}.zip`,
+    mimeType: "application/zip",
+  });
 };

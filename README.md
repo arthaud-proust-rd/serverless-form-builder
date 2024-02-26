@@ -8,7 +8,7 @@ Montrer que l'on peut créer un éditeur de dossier (médical par exemple) sans 
 
 - [x] Remplir un formulaire sans avoir à se connecter
 - [x] Export/Import des données du dossier (champs des formulaires)
-- [ ] Export/Import du dossier avec données et assets (pdfs par exemple)
+- [x] Export/Import du dossier avec données et assets (pdfs par exemple)
 - [ ] Export en un pdf global
 - [ ] Gestion de gros fichiers (>100 Mo)
 - [ ] Stockage dans localStorage

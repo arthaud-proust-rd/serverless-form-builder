@@ -1,13 +1,6 @@
-import { downloadJsonFile } from "./downloader";
-
-export type Form = {
-  identity: {
-    lastName: string;
-    firstName: string;
-    birthDate: Date;
-  };
-  likeChocolate: boolean;
-};
+import { Files, Form } from "./contracts";
+import { downloadZip } from "./downloader";
+import { loadZip } from "./loader";
 
 const form: Form = {
   identity: {
@@ -18,44 +11,55 @@ const form: Form = {
   likeChocolate: false,
 };
 
+const files: Files = {
+  identity: {
+    card: null,
+  },
+};
+
 const fields = {
   identity: {
+    card: document.querySelector<HTMLInputElement>("#identity-card"),
     lastName: document.querySelector<HTMLInputElement>("#identity-lastName"),
     firstName: document.querySelector<HTMLInputElement>("#identity-firstName"),
     birthDate: document.querySelector<HTMLInputElement>("#identity-birthDate"),
   },
   likeChocolate: document.querySelector<HTMLInputElement>("#likeChocolate"),
 };
-const importJsonInput = document.querySelector<HTMLInputElement>("#importJson");
-const exportJsonBtn = document.querySelector<HTMLButtonElement>("#exportJson");
+const importZipInput = document.querySelector<HTMLInputElement>("#importZip");
+const exportZipBtn = document.querySelector<HTMLButtonElement>("#exportZip");
 
-importJsonInput!.addEventListener("change", (e) => {
+const loadForm = (formToLoad: Form) => {
+  form.identity.firstName = formToLoad.identity.firstName;
+  form.identity.lastName = formToLoad.identity.lastName;
+  form.identity.birthDate = new Date(formToLoad.identity.birthDate);
+  form.likeChocolate = formToLoad.likeChocolate;
+
+  fields.identity.firstName!.value = form.identity.firstName;
+  fields.identity.lastName!.value = form.identity.lastName;
+  fields.identity.birthDate!.valueAsDate = form.identity.birthDate;
+  fields.likeChocolate!.checked = form.likeChocolate;
+};
+
+const loadFiles = (filesToLoad: Files) => {
+  files.identity.card = filesToLoad.identity.card;
+};
+
+importZipInput!.addEventListener("change", async (e) => {
   //@ts-expect-error
   const file: File = e.target.files[0];
 
-  const reader = new FileReader();
-  reader.addEventListener("load", (e) => {
-    if (!e.target) {
-      return;
-    }
+  const loaded = await loadZip(file);
 
-    if (!(typeof e.target.result === "string")) {
-      return;
-    }
+  loadForm(loaded.form);
+  loadFiles(loaded.files);
+});
 
-    const parsedForm: Form = JSON.parse(e.target.result);
+fields.identity.card!.addEventListener("change", (e) => {
+  //@ts-expect-error
+  const file: File = e.target.files[0];
 
-    form.identity.firstName = parsedForm.identity.firstName;
-    form.identity.lastName = parsedForm.identity.lastName;
-    form.identity.birthDate = new Date(parsedForm.identity.birthDate);
-    form.likeChocolate = parsedForm.likeChocolate;
-
-    fields.identity.firstName!.value = form.identity.firstName;
-    fields.identity.lastName!.value = form.identity.lastName;
-    fields.identity.birthDate!.valueAsDate = form.identity.birthDate;
-    fields.likeChocolate!.checked = form.likeChocolate;
-  });
-  reader.readAsText(file);
+  files.identity.card = file;
 });
 
 fields.identity.lastName!.addEventListener("change", (e) => {
@@ -75,10 +79,9 @@ fields.likeChocolate!.addEventListener("change", (e) => {
   form.likeChocolate = e.currentTarget.checked;
 });
 
-exportJsonBtn!.addEventListener("click", () => {
-  const json = JSON.stringify(form);
-
-  downloadJsonFile({
-    json,
+exportZipBtn!.addEventListener("click", () => {
+  downloadZip({
+    form,
+    files,
   });
 });
