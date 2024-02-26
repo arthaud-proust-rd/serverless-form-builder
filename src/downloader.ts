@@ -1,6 +1,7 @@
 import { Zippable, strToU8, zipSync } from "fflate";
 import { Files, Form } from "./contracts";
 import { loadU8 } from "./loader";
+import { makePdf } from "./pdf";
 
 const downloadURL = ({ url, fileName }: { url: string; fileName: string }) => {
   const a = document.createElement("a");
@@ -75,5 +76,26 @@ export const downloadZip = async ({
     data: zipped,
     fileName: `${folderName}.zip`,
     mimeType: "application/zip",
+  });
+};
+
+export const downloadPdf = async ({
+  pdfName = "dossier",
+  form,
+  files,
+}: {
+  pdfName?: string;
+  form: Form;
+  files: Files;
+}) => {
+  const pdf = await makePdf({
+    form,
+    files,
+  });
+
+  downloadBlob({
+    data: pdf,
+    fileName: `${pdfName}.pdf`,
+    mimeType: "application/pdf",
   });
 };

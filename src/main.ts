@@ -1,5 +1,5 @@
 import { Files, Form } from "./contracts";
-import { downloadZip } from "./downloader";
+import { downloadPdf, downloadZip } from "./downloader";
 import { loadZip } from "./loader";
 
 const form: Form = {
@@ -28,6 +28,8 @@ const fields = {
 };
 const importZipInput = document.querySelector<HTMLInputElement>("#importZip");
 const exportZipBtn = document.querySelector<HTMLButtonElement>("#exportZip");
+const downloadPdfBtn =
+  document.querySelector<HTMLButtonElement>("#downloadPdf");
 
 const loadForm = (formToLoad: Form) => {
   form.identity.firstName = formToLoad.identity.firstName;
@@ -81,6 +83,13 @@ fields.likeChocolate!.addEventListener("change", (e) => {
 
 exportZipBtn!.addEventListener("click", () => {
   downloadZip({
+    form,
+    files,
+  });
+});
+
+downloadPdfBtn!.addEventListener("click", () => {
+  downloadPdf({
     form,
     files,
   });
