@@ -1,30 +1,6 @@
 import { strFromU8, unzipSync } from "fflate";
 import { Files, Form } from "./contracts";
 
-export const loadJson = async <T>(file: File): Promise<T> => {
-  return new Promise((resolve, reject) => {
-    const reader = new FileReader();
-
-    reader.addEventListener("load", (e) => {
-      if (!e.target) {
-        reject("No content");
-        return;
-      }
-
-      if (!(typeof e.target.result === "string")) {
-        reject("Not a string content");
-        return;
-      }
-
-      const parsedJson: T = JSON.parse(e.target.result);
-
-      resolve(parsedJson);
-    });
-
-    reader.readAsText(file);
-  });
-};
-
 export const loadU8 = async (file: File): Promise<Uint8Array> => {
   return new Promise((resolve, reject) => {
     const reader = new FileReader();
