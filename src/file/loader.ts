@@ -1,5 +1,6 @@
 import { strFromU8, unzipSync } from "fflate";
-import { Files, Form } from "./contracts";
+import { Files, Form } from "../contracts";
+import { parseForm } from "../form";
 
 export const loadU8 = async (file: File): Promise<Uint8Array> => {
   return new Promise((resolve, reject) => {
@@ -28,7 +29,7 @@ export const loadZip = async (
 ): Promise<{ form: Form; files: Files }> => {
   const unzipped = unzipSync(await loadU8(file));
 
-  const form: Form = JSON.parse(strFromU8(unzipped["data.json"]));
+  const form: Form = parseForm(strFromU8(unzipped["data.json"]));
 
   const files: Files = {
     identity: {

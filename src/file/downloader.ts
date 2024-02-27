@@ -1,7 +1,7 @@
 import { Zippable, strToU8, zipSync } from "fflate";
-import { Files, Form } from "./contracts";
+import { Files, Form } from "../contracts";
+import { makePdf } from "../pdf";
 import { loadU8 } from "./loader";
-import { makePdf } from "./pdf";
 
 const downloadURL = ({ url, fileName }: { url: string; fileName: string }) => {
   const a = document.createElement("a");
@@ -11,21 +11,6 @@ const downloadURL = ({ url, fileName }: { url: string; fileName: string }) => {
   document.body.appendChild(a);
   a.click();
   a.remove();
-};
-
-export const downloadJsonFile = ({
-  fileName = "dossier.json",
-  form,
-}: {
-  fileName?: string;
-  form: Form;
-}) => {
-  const json = JSON.stringify(form);
-
-  downloadURL({
-    url: "data:text/plain;charset=utf-8," + encodeURIComponent(json),
-    fileName,
-  });
 };
 
 const downloadBlob = ({

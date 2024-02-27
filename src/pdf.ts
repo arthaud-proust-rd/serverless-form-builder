@@ -1,6 +1,6 @@
 import { PDFDocument, StandardFonts, rgb } from "pdf-lib";
 import { Files, Form } from "./contracts";
-import { loadU8 } from "./loader";
+import { loadU8 } from "./file/loader";
 
 const addFormPages = async ({
   pdfDoc,
