@@ -1,5 +1,19 @@
 # POC serverless-form-builder
 
+## Utiliser
+
+- installer les dépendances
+
+```shell
+yarn
+```
+
+- lancer le serveur
+
+```shell
+yarn dev
+```
+
 ## Objectif général
 
 Montrer que l'on peut créer un éditeur de dossier (médical par exemple) sans base de donnée, mais plutôt à base d'export de données (json + pdf)
